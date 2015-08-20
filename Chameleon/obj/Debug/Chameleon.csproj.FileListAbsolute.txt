@@ -1,0 +1,5 @@
+c:\users\edgekiller\documents\visual studio 2015\Projects\Chameleon\Chameleon\bin\Debug\Chameleon.exe.config
+c:\users\edgekiller\documents\visual studio 2015\Projects\Chameleon\Chameleon\bin\Debug\Chameleon.exe
+c:\users\edgekiller\documents\visual studio 2015\Projects\Chameleon\Chameleon\bin\Debug\Chameleon.pdb
+c:\users\edgekiller\documents\visual studio 2015\Projects\Chameleon\Chameleon\obj\Debug\Chameleon.exe
+c:\users\edgekiller\documents\visual studio 2015\Projects\Chameleon\Chameleon\obj\Debug\Chameleon.pdb
