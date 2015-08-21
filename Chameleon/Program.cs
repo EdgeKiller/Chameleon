@@ -9,7 +9,7 @@ namespace Chameleon
         static void Main(string[] args)
         {
 
-            if(args.Length != 1)
+            if (args.Length != 1)
             {
                 Console.WriteLine("Usage : Chameleon <script file>");
                 Console.WriteLine("<script file> is a relative path to a .ch script to run.");

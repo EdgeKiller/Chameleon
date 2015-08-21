@@ -2,6 +2,6 @@
 {
     public enum TokenizeState
     {
-        DEFAULT, WORD, NUMBER, STRING, COMMENT
+        DEFAULT, IDENTIFIER, NUMBER, STRING, COMMENT
     }
 }

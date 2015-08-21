@@ -1,8 +1,8 @@
-title "Ask your name and your age"
-print "Enter your name :"
-input name
-print "Enter your age :"
-input age
-clear 
-print "Welcome " + name +", you are " + age + " year's old !"
-wait 
+TITLE "Ask your name and your age"
+PRINT "Enter your name :"
+INPUT name
+PRINT "Enter your age :"
+INPUT age
+CLEAR 
+PRINT "Welcome " + name +", you are " + age + " year's old !"
+WAIT

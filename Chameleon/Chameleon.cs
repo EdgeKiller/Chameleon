@@ -4,9 +4,6 @@ using Chameleon.TokenPackage;
 using Chameleon.ValuePackage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chameleon
 {
@@ -27,7 +24,7 @@ namespace Chameleon
             List<Token> tokens = Tokenizer.Tokenize(source);
 
             Parser parser = new Parser(tokens, this);
-            List<Statement> statements = parser.Parse(labels);
+            List<Statement> statements = parser.Parse();
 
             currentStatement = 0;
             while (currentStatement < statements.Count)
@@ -36,7 +33,7 @@ namespace Chameleon
                 currentStatement++;
                 statements[thisStatement].Execute();
             }
-
         }
+
     }
 }

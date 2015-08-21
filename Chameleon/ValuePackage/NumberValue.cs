@@ -21,7 +21,7 @@
 
         public double ToNumber()
         {
-            return value; 
+            return value;
         }
     }
 }

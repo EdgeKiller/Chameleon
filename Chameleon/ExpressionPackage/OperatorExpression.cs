@@ -5,15 +5,14 @@ namespace Chameleon.ExpressionPackage
 {
     public class OperatorExpression : Expression
     {
-        private Expression left;
-        private char op;
-        private Expression right;
+        private Expression left, right;
+        private string op;
 
-        public OperatorExpression(Expression left, char op, Expression right)
+        public OperatorExpression(Expression left, string op, Expression right)
         {
             this.left = left;
-            this.op = op;
             this.right = right;
+            this.op = op;
         }
 
         public Value Evaluate()
@@ -23,58 +22,53 @@ namespace Chameleon.ExpressionPackage
 
             switch (op)
             {
-                case '=':
-                    if (leftVal is NumberValue) 
+                case "==":
+                    if (leftVal is NumberValue && rightVal is NumberValue)
                     {
-                        return new NumberValue((leftVal.ToNumber() ==
-                                                rightVal.ToNumber()) ? 1 : 0);
-                    } 
-                    else 
-                    {
-                        return new NumberValue(leftVal.ToString().Equals(
-                                               rightVal.ToString()) ? 1 : 0);
+                        return new NumberValue((leftVal.ToNumber() == rightVal.ToNumber()) ? 1 : 0);
                     }
-                case '+':
-                    if (leftVal is NumberValue) 
+                    else
                     {
-                        return new NumberValue(leftVal.ToNumber() +
-                                               rightVal.ToNumber());
-                    } 
-                    else 
+                        return new NumberValue(leftVal.ToString().Equals(rightVal.ToString()) ? 1 : 0);
+                    }
+                case "+":
+                    if (leftVal is NumberValue && rightVal is NumberValue)
                     {
-                        return new StringValue(leftVal.ToString() +
-                                rightVal.ToString());
+                        return new NumberValue(leftVal.ToNumber() + rightVal.ToNumber());
                     }
-                case '-':
-                    return new NumberValue(leftVal.ToNumber() -
-                            rightVal.ToNumber());
-                case '*':
-                    return new NumberValue(leftVal.ToNumber() *
-                            rightVal.ToNumber());
-                case '/':
-                    return new NumberValue(leftVal.ToNumber() /
-                            rightVal.ToNumber());
-                case '<':
-                    if (leftVal is NumberValue) {
-                        return new NumberValue((leftVal.ToNumber() <
-                                                rightVal.ToNumber()) ? 1 : 0);
-                    } else {
-                        return new NumberValue((leftVal.ToString().CompareTo(
-                                               rightVal.ToString()) < 0) ? 1 : 0);
-                    }
-                case '>':
-                    if (leftVal is NumberValue) 
+                    else
                     {
-                        return new NumberValue((leftVal.ToNumber() >
-                                                rightVal.ToNumber()) ? 1 : 0);
+                        return new StringValue(leftVal.ToString() + rightVal.ToString());
                     }
-                    else 
-                    {
-                        return new NumberValue((leftVal.ToString().CompareTo(
-                                rightVal.ToString()) > 0) ? 1 : 0);
-                    }
+                case "-":
+                    return new NumberValue(leftVal.ToNumber() - rightVal.ToNumber());
+                case "*":
+                    return new NumberValue(leftVal.ToNumber() * rightVal.ToNumber());
+                case "/":
+                    return new NumberValue(leftVal.ToNumber() / rightVal.ToNumber());
+                case "%":
+                    return new NumberValue(leftVal.ToNumber() % rightVal.ToNumber());
+                case "^":
+                    return new NumberValue(Math.Pow(leftVal.ToNumber(), rightVal.ToNumber()));
+                case "++":
+                    return new NumberValue(leftVal.ToNumber() + rightVal.ToNumber());
+                case "--":
+                    return new NumberValue(leftVal.ToNumber() - rightVal.ToNumber());
+                case "<":
+                    return new NumberValue((leftVal.ToNumber() < rightVal.ToNumber()) ? 1 : 0);
+                case ">":
+                    return new NumberValue((leftVal.ToNumber() > rightVal.ToNumber()) ? 1 : 0);
+                case "=<":
+                    return new NumberValue((leftVal.ToNumber() <= rightVal.ToNumber()) ? 1 : 0);
+                case "=>":
+                    return new NumberValue((leftVal.ToNumber() >= rightVal.ToNumber()) ? 1 : 0);
+                case "=!":
+                    if (leftVal is NumberValue && rightVal is NumberValue)
+                        return new NumberValue((leftVal.ToNumber() != rightVal.ToNumber()) ? 1 : 0);
+                    else
+                        return new NumberValue(leftVal.ToString().Equals(rightVal.ToNumber()) ? 0 : 1);
             }
-            throw new Exception("Unknown operator.");
+            throw new Exception("Unknown operator : " + op);
         }
     }
 }

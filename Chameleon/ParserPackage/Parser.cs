@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Chameleon.TokenPackage;
+﻿using Chameleon.ExpressionPackage;
 using Chameleon.StatementPackage;
-using Chameleon.ExpressionPackage;
+using Chameleon.TokenPackage;
 using Chameleon.ValuePackage;
+using System;
+using System.Collections.Generic;
 
 namespace Chameleon.ParserPackage
 {
     public class Parser
     {
-        public List<Token> Tokens { get { return tokens; } }
         private List<Token> tokens;
 
         private int position;
@@ -22,60 +21,66 @@ namespace Chameleon.ParserPackage
             position = 0;
         }
 
-        public List<Statement> Parse(Dictionary<string, int> labels)
+        public List<Statement> Parse()
         {
             List<Statement> statements = new List<Statement>();
 
-            while (true)
+            while(true)
             {
-                while (match(TokenType.LINE)) ;
+                while (Match(TokenType.LINE)) ;
 
-                if (match(TokenType.LABEL))
+                if (Match("PRINT"))
                 {
-                    labels[last(1).Text] = statements.Count;
+                    statements.Add(new PrintStatement(Exp()));
                 }
-                else if (match(TokenType.WORD, TokenType.EQUALS))
+                else if (Match("INPUT"))
                 {
-                    String name = last(2).Text;
-                    Expression value = exp();
-                    statements.Add(new AssignStatement(name, value, chameleon));
+                    statements.Add(new InputStatement(Consume(TokenType.IDENTIFIER).Text, chameleon));
                 }
-                else if (match("print"))
+                else if (Match("GOTO"))
                 {
-                    statements.Add(new PrintStatement(exp()));
+                    statements.Add(new GotoStatement(Consume(TokenType.IDENTIFIER).Text, chameleon));
                 }
-                else if (match("input"))
+                else if (Match("IF"))
                 {
-                    statements.Add(new InputStatement(
-                        consume(TokenType.WORD).Text, chameleon));
-                }
-                else if (match("goto"))
-                {
-                    statements.Add(new GotoStatement(
-                        consume(TokenType.WORD).Text, chameleon));
-                }
-                else if (match("if"))
-                {
-                    Expression condition = exp();
-                    consume("then");
-                    String label = consume(TokenType.WORD).Text;
+                    Expression condition = Exp();
+                    Consume("THEN");
+                    string label = Consume(TokenType.IDENTIFIER).Text;
                     statements.Add(new IfThenStatement(condition, label, chameleon));
                 }
-                else if(match("exit"))
+                else if (Match("EXIT"))
                 {
                     statements.Add(new ExitStatement());
                 }
-                else if(match("clear"))
+                else if (Match("CLEAR"))
                 {
                     statements.Add(new ClearStatement());
                 }
-                else if(match("wait"))
+                else if (Match("WAIT"))
                 {
                     statements.Add(new WaitStatement());
                 }
-                else if(match("title"))
+                else if (Match("TITLE"))
                 {
-                    statements.Add(new TitleStatement(consume(TokenType.STRING).Text));
+                    statements.Add(new TitleStatement(Consume(TokenType.STRING).Text));
+                }
+                else if (Match(TokenType.LABEL))
+                {
+                    chameleon.labels[Last(1).Text] = statements.Count;
+                }
+                else if (Match(TokenType.IDENTIFIER, TokenType.ASSIGN))
+                {
+                    string name = Last(2).Text;
+                    string op = Last(1).Text;
+                    Expression value = Exp();
+                    statements.Add(new AssignStatement(name, value, chameleon, op));
+                }
+                else if (Match(TokenType.IDENTIFIER, TokenType.SPE_OPERATOR))
+                {
+                    string name = Last(2).Text;
+                    string op = Last(1).Text;
+                    Expression value = new NumberValue(1);
+                    statements.Add(new AssignStatement(name, value, chameleon, op));
                 }
                 else break;
             }
@@ -83,95 +88,97 @@ namespace Chameleon.ParserPackage
             return statements;
         }
 
-        private Expression exp()
+        private Expression Exp()
         {
-            return op();
+            return Op();
         }
 
-        private Expression op()
+        private Expression Op()
         {
-            Expression expression = atomic();
+            Expression expression = Atomic();
 
-            while (match(TokenType.OPERATOR) ||
-                   match(TokenType.EQUALS))
+            while(Match(TokenType.OPERATOR) || Match(TokenType.COMP_OPERATOR))
             {
-                char op = last(1).Text[0];
-                Expression right = atomic();
+                string op = Last(1).Text;
+                Expression right;
+                if (op == "++" || op == "--")
+                    right = new NumberValue(1);
+                else
+                    right = Atomic();
                 expression = new OperatorExpression(expression, op, right);
             }
 
             return expression;
         }
 
-        private Expression atomic()
+        public Expression Atomic()
         {
-            if (match(TokenType.WORD))
+            if(Match(TokenType.IDENTIFIER))
             {
-                return new VariableExpression(last(1).Text, chameleon);
+                return new VariableExpression(Last(1).Text, chameleon);
             }
-            else if (match(TokenType.NUMBER))
+            else if(Match(TokenType.NUMBER))
             {
-                return new NumberValue(double.Parse(last(1).Text));
+                return new NumberValue(double.Parse(Last(1).Text));
             }
-            else if (match(TokenType.STRING))
+            else if(Match(TokenType.STRING))
             {
-                return new StringValue(last(1).Text);
+                return new StringValue(Last(1).Text);
             }
-            else if (match(TokenType.LEFT_PAREN))
+            else if(Match(TokenType.LEFT_P))
             {
-                Expression expression = exp();
-                consume(TokenType.RIGHT_PAREN);
+                Expression expression = Exp();
+                Consume(TokenType.RIGHT_P);
                 return expression;
             }
+
             throw new Exception("Couldn't parse.");
         }
 
-        private bool match(TokenType type1, TokenType type2)
+        private bool Match(TokenType type)
         {
-            if (get(0).Type != type1) return false;
-            if (get(1).Type != type2) return false;
+            if (Get(0).Type != type) return false;
+            position++;
+            return true;
+        }
+
+        private bool Match(TokenType type1, TokenType type2)
+        {
+            if (Get(0).Type != type1) return false;
+            if (Get(1).Type != type2) return false;
             position += 2;
             return true;
         }
 
-        private bool match(TokenType type)
+        private bool Match(string name)
         {
-            if (get(0).Type != type) return false;
+            if (Get(0).Type != TokenType.IDENTIFIER) return false;
+            if (!Get(0).Text.Equals(name)) return false;
             position++;
             return true;
         }
 
-        private bool match(string name)
+        private Token Consume(TokenType type)
         {
-            if (get(0).Type != TokenType.WORD) return false;
-            if (!get(0).Text.Equals(name)) return false;
-            position++;
-            return true;
-        }
-
-        private Token consume(TokenType type)
-        {
-            if (get(0).Type != type) throw new Exception("Expected " + type + ".");
+            if (Get(0).Type != type) throw new Exception("Expected " + type + ".");
             return tokens[position++];
         }
 
-        private Token consume(String name)
+        private Token Consume(String name)
         {
-            if (!match(name)) throw new Exception("Expected " + name + ".");
-            return last(1);
+            if (!Match(name)) throw new Exception("Expected " + name + ".");
+            return Last(1);
         }
 
-        private Token last(int offset)
+        private Token Last(int offset)
         {
+            if (position - offset < 0) return new Token("\n", TokenType.NULL);
             return tokens[position - offset];
         }
 
-        private Token get(int offset)
+        private Token Get(int offset)
         {
-            if (position + offset >= tokens.Count)
-            {
-                return new Token("", TokenType.EOF);
-            }
+            if (position + offset >= tokens.Count) return new Token("", TokenType.EOF);
             return tokens[position + offset];
         }
     }

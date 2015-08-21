@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F7177562-D25D-430F-9657-0C74084A3A22}</ProjectGuid>
+    <ProjectGuid>{FDED87EC-F40E-41E5-8630-3EFACD7B1FD5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chameleon</RootNamespace>
@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chameleon.cs" />
+    <Compile Include="ExpressionPackage\Expression.cs" />
     <Compile Include="ExpressionPackage\OperatorExpression.cs" />
     <Compile Include="ExpressionPackage\VariableExpression.cs" />
     <Compile Include="ParserPackage\Parser.cs" />
@@ -56,20 +57,19 @@
     <Compile Include="StatementPackage\ClearStatement.cs" />
     <Compile Include="StatementPackage\ExitStatement.cs" />
     <Compile Include="StatementPackage\GotoStatement.cs" />
-    <Compile Include="ExpressionPackage\Expression.cs" />
     <Compile Include="StatementPackage\IfThenStatement.cs" />
     <Compile Include="StatementPackage\InputStatement.cs" />
-    <Compile Include="StatementPackage\Statement.cs" />
     <Compile Include="StatementPackage\PrintStatement.cs" />
+    <Compile Include="StatementPackage\Statement.cs" />
     <Compile Include="StatementPackage\TitleStatement.cs" />
     <Compile Include="StatementPackage\WaitStatement.cs" />
-    <Compile Include="ValuePackage\NumberValue.cs" />
-    <Compile Include="ValuePackage\StringValue.cs" />
-    <Compile Include="ValuePackage\Value.cs" />
     <Compile Include="TokenPackage\Token.cs" />
     <Compile Include="TokenPackage\Tokenizer.cs" />
     <Compile Include="TokenPackage\TokenizeState.cs" />
     <Compile Include="TokenPackage\TokenType.cs" />
+    <Compile Include="ValuePackage\NumberValue.cs" />
+    <Compile Include="ValuePackage\StringValue.cs" />
+    <Compile Include="ValuePackage\Value.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -77,7 +77,6 @@
   <ItemGroup>
     <Content Include="logo.ico" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

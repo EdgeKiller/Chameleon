@@ -13,7 +13,7 @@
 
         public void Execute()
         {
-            if(chameleon.labels.ContainsKey(label))
+            if (chameleon.labels.ContainsKey(label))
             {
                 chameleon.currentStatement = chameleon.labels[label];
             }

@@ -1,3 +1,3 @@
-title "Hello world sample"
-print "Hello world"
-wait
+TITLE "Hello world sample"
+PRINT "Hello world"
+WAIT

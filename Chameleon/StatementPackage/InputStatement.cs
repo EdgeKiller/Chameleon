@@ -19,14 +19,18 @@ namespace Chameleon.StatementPackage
             try
             {
                 string input = Console.ReadLine();
-                try
+                if (!input.Equals(""))
                 {
-                    double value = double.Parse(input);
-                    chameleon.variables[name] = new NumberValue(value);
-                }
-                catch
-                {
-                    chameleon.variables[name] = new StringValue(input);
+                    double value;
+                    if(double.TryParse(input, out value))
+                    {
+                        chameleon.variables[name] = new NumberValue(value);
+                    }
+                    else
+                    {
+                        chameleon.variables[name] = new StringValue(input.ToString());
+                    }
+
                 }
             }
             catch { }

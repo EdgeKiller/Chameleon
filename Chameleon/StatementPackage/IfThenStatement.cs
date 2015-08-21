@@ -20,7 +20,7 @@ namespace Chameleon.StatementPackage
             if (chameleon.labels.ContainsKey(label))
             {
                 double value = condition.Evaluate().ToNumber();
-                if(value != 0)
+                if (value != 0)
                 {
                     chameleon.currentStatement = chameleon.labels[label];
                 }

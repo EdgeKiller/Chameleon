@@ -1,4 +1,6 @@
-﻿namespace Chameleon.ValuePackage
+﻿using System;
+
+namespace Chameleon.ValuePackage
 {
     public class StringValue : Value
     {
