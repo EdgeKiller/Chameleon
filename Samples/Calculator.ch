@@ -6,12 +6,15 @@ INPUT num2
 PRINT "Type operator : "
 INPUT op
 
-IF (op == "+") THEN ADD
-IF (op == "-") THEN REMOVE
-IF (op == "*") THEN MULTIPLY
-IF (op == "/") THEN DIVIDE
-IF (op == "%") THEN MODULO
-IF (op == "^") THEN POW
+IF (op == "+") THEN ADD ' Goto ADD
+IF (op == "-") THEN REMOVE ' Goto REMOVE
+IF (op == "*") THEN MULTIPLY ' Goto MULTIPLY
+IF (op == "/") THEN DIVIDE ' Goto DIVIDE
+IF (op == "%") THEN MODULO ' Goto MODULO
+IF (op == "^") THEN POW ' Goto POW
+PRINT "Bad operator"
+WAIT
+EXIT
 
 ADD:
 result = (num1 + num2)

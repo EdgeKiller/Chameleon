@@ -2,7 +2,7 @@
 
 namespace Chameleon.ExpressionPackage
 {
-    class VariableExpression : Expression
+    public class VariableExpression : Expression
     {
         private string name;
         private Chameleon chameleon;

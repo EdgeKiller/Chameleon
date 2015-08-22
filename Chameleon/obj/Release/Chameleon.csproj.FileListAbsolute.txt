@@ -1,0 +1,5 @@
+E:\Projects\Chameleon\Chameleon\bin\Release\Chameleon.exe.config
+E:\Projects\Chameleon\Chameleon\bin\Release\Chameleon.exe
+E:\Projects\Chameleon\Chameleon\bin\Release\Chameleon.pdb
+E:\Projects\Chameleon\Chameleon\obj\Release\Chameleon.exe
+E:\Projects\Chameleon\Chameleon\obj\Release\Chameleon.pdb

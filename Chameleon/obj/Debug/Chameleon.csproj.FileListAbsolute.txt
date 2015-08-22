@@ -3,3 +3,4 @@ E:\Projects\Chameleon\Chameleon\bin\Debug\Chameleon.exe
 E:\Projects\Chameleon\Chameleon\bin\Debug\Chameleon.pdb
 E:\Projects\Chameleon\Chameleon\obj\Debug\Chameleon.exe
 E:\Projects\Chameleon\Chameleon\obj\Debug\Chameleon.pdb
+E:\Projects\Chameleon\Chameleon\obj\Debug\Chameleon.csprojResolveAssemblyReference.cache
